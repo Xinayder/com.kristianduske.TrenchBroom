@@ -1,20 +1,20 @@
 {
-    "app-id": "com.kristianduske.TrenchBroom",
+    "id": "com.kristianduske.TrenchBroom",
     "runtime": "org.kde.Platform",
-    "runtime-version": "6.8",
+    "runtime-version": "6.9",
     "sdk": "org.kde.Sdk",
     "command": "trenchbroom",
     "rename-icon": "trenchbroom",
     "rename-mime-file": "trenchbroom.xml",
     "rename-desktop-file": "trenchbroom.desktop",
     "finish-args": [
-        "--share=ipc",
-        "--socket=wayland",
-        "--socket=fallback-x11",
+        "--device=dri",
         "--env=TMPDIR=/var/tmp",
         "--filesystem=host",
         "--filesystem=xdg-run/gvfs",
-        "--device=dri"
+        "--share=ipc",
+        "--socket=fallback-x11",
+        "--socket=wayland"
     ],
     "cleanup": [
         "/include",
@@ -95,8 +95,8 @@
             "sources": [
                 {
                     "type": "archive",
-                    "url": "https://github.com/fmtlib/fmt/archive/refs/tags/11.0.2.tar.gz",
-                    "sha256": "6cb1e6d37bdcb756dbbe59be438790db409cdb4868c66e888d5df9f13f7c027f"
+                    "url": "https://github.com/fmtlib/fmt/archive/refs/tags/11.2.0.tar.gz",
+                    "sha256": "bc23066d87ab3168f27cef3e97d545fa63314f5c79df5ea444d41d56f962c6af"
                 }
             ]
         },
@@ -107,8 +107,8 @@
                 {
                     "type": "git",
                     "url": "https://github.com/richgel999/miniz",
-                    "tag": "3.0.2",
-                    "commit": "293d4db1b7d0ffee9756d035b9ac6f7431ef8492"
+                    "tag": "3.1.0",
+                    "commit": "174573d60290f447c13a2b1b3405de2b96e27d6c"
                 }
             ]
         },
@@ -175,7 +175,7 @@
                 "install -Dm 755 app/trenchbroom ${FLATPAK_DEST}/bin/trenchbroom",
                 "install -Dm 644 ../app/resources/linux/trenchbroom.desktop ${FLATPAK_DEST}/share/applications/trenchbroom.desktop",
                 "install -Dm 644 ../${FLATPAK_ID}.appdata.xml ${FLATPAK_DEST}/share/metainfo/${FLATPAK_ID}.metainfo.xml",
-            "for size in 16 24 32 48 64 128 256 512; do install -Dm0644 ../app/resources/linux/icons/icon_${size}.png ${FLATPAK_DEST}/share/icons/hicolor/${size}x${size}/apps/trenchbroom.png; done"
+                "for size in 16 24 32 48 64 128 256 512; do install -Dm0644 ../app/resources/linux/icons/icon_${size}.png ${FLATPAK_DEST}/share/icons/hicolor/${size}x${size}/apps/trenchbroom.png; done"
             ]
         }
     ]
