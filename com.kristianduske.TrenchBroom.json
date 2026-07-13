@@ -40,7 +40,6 @@
     },
     "modules": [
         "shared-modules/glu/glu-9.json",
-        "shared-modules/glew/glew.json",
         {
             "name": "assimp",
             "buildsystem": "cmake-ninja",
@@ -69,6 +68,55 @@
             ]
         },
         {
+            "name": "zstd",
+            "buildsystem": "cmake-ninja",
+            "builddir": true,
+            "subdir": "build/cmake",
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://github.com/facebook/zstd.git",
+                    "tag": "v1.5.6",
+                    "commit": "794ea1b0afca0f020f4e57b6732332231fb23c70"
+                }
+            ]
+        },
+        {
+            "name": "libdwarf",
+            "buildsystem": "cmake-ninja",
+            "builddir": true,
+            "config-opts": [
+                "-DPIC_ALWAYS=TRUE",
+                "-DBUILD_DWARFDUMP=FALSE",
+                "-DENABLE_DECOMPRESSION=NO"
+            ],
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://github.com/jeremy-rifkin/libdwarf-lite.git",
+                    "tag": "v2.1.0",
+                    "commit": "5dfb2cd2aacf2bf473e5bfea79e41289f88b3a5f"
+                }
+            ]
+        },
+        {
+            "name": "cpptrace",
+            "buildsystem": "cmake-ninja",
+            "builddir": true,
+            "config-opts": [
+                "-DCMAKE_BUILD_TYPE=Release",
+                "-DCPPTRACE_USE_EXTERNAL_LIBDWARF=ON",
+                "-DCPPTRACE_USE_EXTERNAL_ZSTD=ON"
+            ],
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://github.com/jeremy-rifkin/cpptrace.git",
+                    "tag": "v1.0.4"
+                }
+            ]
+        },
+        {
             "name": "freeimage",
             "buildsystem": "autotools",
             "build-options": {
@@ -90,25 +138,14 @@
             ]
         },
         {
-            "name": "fmt",
-            "buildsystem": "cmake-ninja",
-            "sources": [
-                {
-                    "type": "archive",
-                    "url": "https://github.com/fmtlib/fmt/archive/refs/tags/11.2.0.tar.gz",
-                    "sha256": "bc23066d87ab3168f27cef3e97d545fa63314f5c79df5ea444d41d56f962c6af"
-                }
-            ]
-        },
-        {
             "name": "miniz",
             "buildsystem": "cmake-ninja",
             "sources":[
                 {
                     "type": "git",
                     "url": "https://github.com/richgel999/miniz",
-                    "tag": "3.1.0",
-                    "commit": "174573d60290f447c13a2b1b3405de2b96e27d6c"
+                    "tag": "3.1.1",
+                    "commit": "d10b03cc73475af673df40f06e5cefd1d5f940d9"
                 }
             ]
         },
@@ -126,6 +163,27 @@
                     "type":"archive",
                     "url": "https://github.com/jgm/pandoc/releases/download/2.2.1/pandoc-2.2.1-linux.tar.gz",
                     "sha256": "3b1b573cdf957b4102c42ce6f5a641787267a55a5e88dcca942fd471c25793cb"
+                }
+            ]
+        },
+        {
+            "name": "stduuid",
+            "buildsystem": "cmake-ninja",
+            "builddir": true,
+            "config-opts": [
+                "-DUUID_USING_CXX20_SPAN=ON",
+                "-DUUID_SYSTEM_GENERATOR=ON",
+                "-DUUID_TIME_GENERATOR=ON"
+            ],
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://github.com/mariusbancila/stduuid.git",
+                    "tag": "v1.2.3"
+                },
+                {
+                    "type": "patch",
+                    "path": "stduuid-fix-install-dir.patch"
                 }
             ]
         },
@@ -155,16 +213,13 @@
                 {
                     "type": "git",
                     "url": "https://github.com/TrenchBroom/TrenchBroom.git",
-                    "commit": "c3aa9586ac93c55deca4801044f3a32258bc2c1e",
-                    "tag": "v2025.4"
+                    "commit": "b8c14a93c6945a389c56ff7bf77e869c16f24895",
+                    "tag": "v2026.1",
+                    "disable-submodules": true
                 },
                 {
                     "type": "patch",
                     "path": "remove-vcpkg.patch"
-                },
-                {
-                    "type": "patch",
-                    "path": "ignore-glew-error.patch"
                 },
                 {
                     "type": "file",
@@ -172,10 +227,10 @@
                 }
             ],
             "post-install": [
-                "install -Dm 755 app/trenchbroom ${FLATPAK_DEST}/bin/trenchbroom",
-                "install -Dm 644 ../app/resources/linux/trenchbroom.desktop ${FLATPAK_DEST}/share/applications/trenchbroom.desktop",
+                "install -Dm 755 app/TrenchBroom/trenchbroom ${FLATPAK_DEST}/bin/trenchbroom",
+                "install -Dm 644 ../app/TrenchBroom/resources/linux/trenchbroom.desktop ${FLATPAK_DEST}/share/applications/trenchbroom.desktop",
                 "install -Dm 644 ../${FLATPAK_ID}.appdata.xml ${FLATPAK_DEST}/share/metainfo/${FLATPAK_ID}.metainfo.xml",
-                "for size in 16 24 32 48 64 128 256 512; do install -Dm0644 ../app/resources/linux/icons/icon_${size}.png ${FLATPAK_DEST}/share/icons/hicolor/${size}x${size}/apps/trenchbroom.png; done"
+                "for size in 16 24 32 48 64 128 256 512; do install -Dm0644 ../app/TrenchBroom/resources/linux/icons/icon_${size}.png ${FLATPAK_DEST}/share/icons/hicolor/${size}x${size}/apps/trenchbroom.png; done"
             ]
         }
     ]
